@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box } from "@mui/material";
 
 import AppButton from "./components/AppButton";
 import AppDialog from "./components/AppDialog";

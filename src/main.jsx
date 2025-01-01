@@ -2,6 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 
+import { fetchInterceptor } from "./app/services/fetchInterceptor";
+
+/*
+ * 攔截 https://api.gamer.com.tw/mobile_app/im/v1/my_sticker.php
+ *
+ */
+fetchInterceptor();
+
 const app = document.createElement("div");
 const targetSelector = ".sticker-wrapper";
 
