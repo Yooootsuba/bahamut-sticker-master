@@ -21,8 +21,8 @@ export const fetchInterceptor = () => {
             return ORIGINAL_FETCH(...args).then((response) => {
                 return response.json().then((data) => {
                     // 將使用者的貼圖列表存放到 sessionStorage
-                    sessionStorage.setItem(
-                        SESSION_STORAGE_STICKERS,
+                    localStorage.setItem(
+                        "bsm_sticker_list",
                         JSON.stringify(data)
                     );
 

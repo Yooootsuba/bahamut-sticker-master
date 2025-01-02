@@ -1,12 +1,8 @@
 import React from "react";
 
-import {
-    Dialog,
-    DialogContent,
-    DialogActions,
-    Button,
-    Box,
-} from "@mui/material";
+import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
+
+import StickerDndList from "./StickerDndList";
 
 import useAppDialogAtom from "../../atoms/appDialogAtom";
 
@@ -37,15 +33,12 @@ export default function AppDialog() {
                     textAlign: "center",
                 }}
             >
-                這是一個自訂樣式的 Dialog
+                <StickerDndList />
             </DialogContent>
 
             <DialogActions sx={{ justifyContent: "center" }}>
                 <Button onClick={closeAppDialog} sx={{ color: "#4caf50" }}>
-                    取消
-                </Button>
-                <Button onClick={closeAppDialog} sx={{ color: "#4caf50" }}>
-                    確認
+                    關閉視窗
                 </Button>
             </DialogActions>
         </Dialog>
