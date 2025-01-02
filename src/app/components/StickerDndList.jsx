@@ -1,52 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { List, ListItem, ListItemText, Checkbox } from "@mui/material";
 
-import useStickerListAtom from "../../atoms/stickerListAtom";
-
-const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-
-    return result.map((item, index) => ({
-        ...item,
-        order: index + 1,
-    }));
-};
+import { useStickerDndList } from "../hooks/stickerDndListHook";
 
 export default function StickerDndList() {
-    const { getTransformedStickerList, setTransformedStickerList } =
-        useStickerListAtom();
-
-    const [stickerList, setStickerList] = useState(
-        getTransformedStickerList().sort((a, b) => a.order - b.order) // 根據 order 進行初始排序
-    );
-
-    const onDragEnd = (result) => {
-        if (!result.destination) return;
-
-        // Reorder the sticker list
-        const reorderedItems = reorder(
-            stickerList,
-            result.source.index,
-            result.destination.index
-        );
-
-        setStickerList(reorderedItems);
-        setTransformedStickerList(reorderedItems);
-    };
-
-    // Handle visibility toggle
-    const handleToggle = (id) => {
-        const updatedItems = stickerList.map((item) =>
-            item.id === id ? { ...item, visible: !item.visible } : item
-        );
-
-        // Update the atom state with the new visibility and order
-        setStickerList(updatedItems);
-        setTransformedStickerList(updatedItems);
-    };
+    const { stickerList, onDragEnd, handleToggle } = useStickerDndList();
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>

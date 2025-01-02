@@ -33,8 +33,6 @@ const useStickerListAtom = () => {
                 }, {}),
             },
         }));
-
-        console.log(data);
     };
 
     return { getTransformedStickerList, setTransformedStickerList };
