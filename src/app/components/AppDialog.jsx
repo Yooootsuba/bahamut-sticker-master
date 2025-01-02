@@ -22,7 +22,7 @@ export default function AppDialog() {
                     backgroundColor: "#f5f5f5",
                     borderRadius: "15px",
                     padding: "20px",
-                    border: "3px solid #4caf50",
+                    border: "5px solid gray",
                 },
             }}
         >
@@ -37,7 +37,13 @@ export default function AppDialog() {
             </DialogContent>
 
             <DialogActions sx={{ justifyContent: "center" }}>
-                <Button onClick={closeAppDialog} sx={{ color: "#4caf50" }}>
+                <Button
+                    variant="outlined"
+                    onClick={closeAppDialog}
+                    sx={{
+                        borderWidth: "2px",
+                    }}
+                >
                     關閉視窗
                 </Button>
             </DialogActions>

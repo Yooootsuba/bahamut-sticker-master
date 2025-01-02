@@ -1,6 +1,13 @@
 import React from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { List, ListItem, ListItemText, Checkbox } from "@mui/material";
+import {
+    Box,
+    Link,
+    List,
+    ListItem,
+    ListItemText,
+    Checkbox,
+} from "@mui/material";
 
 import { useStickerDndList } from "../hooks/stickerDndListHook";
 
@@ -48,9 +55,35 @@ export default function StickerDndList() {
                                                 handleToggle(item.id)
                                             }
                                         />
+
+                                        <Link
+                                            href={`https://home.gamer.com.tw/sticker_detail.php?sticker=${item.id}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            sx={{
+                                                padding: "10px",
+                                            }}
+                                        >
+                                            <Box
+                                                component="img"
+                                                src={`https://im.bahamut.com.tw/sticker/${item.id}/sticker_${item.id}.png`}
+                                                sx={{
+                                                    width: "50px", // 設定圖片的寬度
+                                                    height: "50px", // 設定圖片的高度
+                                                    objectFit: "cover", // 確保圖片填滿框框
+                                                }}
+                                            />
+                                        </Link>
+
                                         <ListItemText
                                             primary={item.name}
-                                            secondary={`序列 : ${item.order}`}
+                                            secondary={`貼圖序列 : ${
+                                                item.order
+                                            } ${
+                                                !item.visible
+                                                    ? "（隱藏中）"
+                                                    : ""
+                                            }`}
                                         />
                                     </ListItem>
                                 )}
