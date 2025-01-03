@@ -1,5 +1,7 @@
 import { URL_MY_STICKER } from "../constants/bahamut";
-import { ORIGINAL_FETCH, SESSION_STORAGE_STICKERS } from "../constants/browser";
+import { ORIGINAL_FETCH } from "../constants/browser";
+
+import { syncResponseWithStorage } from "./syncResponseWithStorage";
 
 /*
  * args[0] 是 url
@@ -20,14 +22,10 @@ export const fetchInterceptor = () => {
 
             return ORIGINAL_FETCH(...args).then((response) => {
                 return response.json().then((data) => {
-                    // 將使用者的貼圖列表存放到 sessionStorage
-                    localStorage.setItem(
-                        "bsm_sticker_list",
-                        JSON.stringify(data)
-                    );
+                    const newData = syncResponseWithStorage(data);
 
                     // 回傳新的 Response 物件
-                    return new Response(JSON.stringify(data), {
+                    return new Response(JSON.stringify(newData), {
                         status: response.status,
                         statusText: response.statusText,
                         headers: response.headers,
