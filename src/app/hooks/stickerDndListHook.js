@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 import _ from "lodash";
 
 import useStickerListAtom from "../../atoms/stickerListAtom";
@@ -22,34 +20,12 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 export const useStickerDndList = () => {
-    /*
-     * 存在 localStorage 的真實資料
-     *
-     */
-    const { getTransformedStickerList, setTransformedStickerList } =
-        useStickerListAtom();
-
-    /*
-     * 經過轉化，顯示在前端給使用者看的資料
-     *
-     */
-    const [stickerList, setStickerList] = useState(
-        _.sortBy(getTransformedStickerList(), "order")
-    );
-
-    /*
-     * 更新時一次要更新到 2 個列表
-     *
-     */
-    const updateStickerList = (updatedStickerList) => {
-        setStickerList(updatedStickerList);
-        setTransformedStickerList(updatedStickerList);
-    };
+    const { stickerList, setStickerList } = useStickerListAtom();
 
     const onDragEnd = (result) => {
         if (!result.destination) return;
 
-        updateStickerList(
+        setStickerList(
             reorder(stickerList, result.source.index, result.destination.index)
         );
     };
@@ -59,7 +35,7 @@ export const useStickerDndList = () => {
      *
      */
     const handleToggle = (id) => {
-        updateStickerList(
+        setStickerList(
             stickerList.map((item) =>
                 item.id === id ? { ...item, visible: !item.visible } : item
             )
