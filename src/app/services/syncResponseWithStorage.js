@@ -4,11 +4,7 @@ import { getDefaultStore } from "jotai";
 import { localStorageStickerListAtom } from "../../atoms/stickerListAtom";
 
 const mergeStickerList = (localStorageStickerList, responseStickerList) => {
-    const mergedList = _.merge(
-        {},
-        localStorageStickerList.data.list,
-        responseStickerList.data.list
-    );
+    const mergedList = { ...localStorageStickerList.data.list };
 
     _.forEach(responseStickerList.data.list, (value, key) => {
         if (!localStorageStickerList.data.list[key]) {
