@@ -1,5 +1,7 @@
+import _ from "lodash";
+
+import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { useAtom, useAtomValue } from "jotai";
 
 const initialState = {
     data: { list: {} },
@@ -13,26 +15,18 @@ const useStickerListAtom = () => {
     const [data, setData] = useAtom(stateAtom);
 
     const getTransformedStickerList = () => {
-        const transformedData = Object.entries(data.data.list).map(
-            ([id, item]) => ({
-                id,
-                ...item,
-            })
-        );
-        return [...transformedData];
+        return _.map(data.data.list, (value, key) => ({
+            id: key,
+            ...value,
+        }));
     };
 
     const setTransformedStickerList = (stickerList) => {
-        setData((prevData) => ({
+        setData({
             data: {
-                list: stickerList.reduce((acc, item) => {
-                    // 以 item.id 為 key，將剩餘資料直接放入物件內
-                    const { id, ...rest } = item;
-                    acc[id] = rest; // 使用 id 作為鍵，rest 只包含除了 id 之外的資料
-                    return acc;
-                }, {}),
+                list: _.keyBy(stickerList, "id"),
             },
-        }));
+        });
     };
 
     return { getTransformedStickerList, setTransformedStickerList };
