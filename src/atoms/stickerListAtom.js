@@ -3,7 +3,7 @@ import _ from "lodash";
 import { atom, useSetAtom, useAtomValue } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
-import { LOCAL_STORAGE_STICKERS } from "../app/constants/browser";
+import { LOCAL_STORAGE_STICKER_LIST_KEY } from "../app/constants/browser";
 
 /*
  * 存在 localStorage 的貼圖列表狀態
@@ -11,8 +11,8 @@ import { LOCAL_STORAGE_STICKERS } from "../app/constants/browser";
  * 資料結構來自於巴哈姆特的 API，是一整個物件
  *
  */
-const localStorageStickerListAtom = atomWithStorage(
-    LOCAL_STORAGE_STICKERS,
+export const localStorageStickerListAtom = atomWithStorage(
+    LOCAL_STORAGE_STICKER_LIST_KEY,
     { data: { list: {} } },
     undefined,
     { getOnInit: true }

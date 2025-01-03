@@ -1,33 +1,33 @@
-import { LOCAL_STORAGE_STICKERS } from "../constants/browser";
-
 import _ from "lodash";
 
-const mergeList = (localStickerList, responseStickerList) => {
+import { getDefaultStore } from "jotai";
+import { localStorageStickerListAtom } from "../../atoms/stickerListAtom";
+
+const mergeStickerList = (localStorageStickerList, responseStickerList) => {
     const mergedList = _.merge(
         {},
-        localStickerList.data.list,
+        localStorageStickerList.data.list,
         responseStickerList.data.list
     );
 
     _.forEach(responseStickerList.data.list, (value, key) => {
-        if (!localStickerList.data.list[key]) {
+        if (!localStorageStickerList.data.list[key]) {
             mergedList[key] = value;
         }
     });
 
     return {
-        ...localStickerList,
+        ...localStorageStickerList,
         data: {
-            ...localStickerList.data,
+            ...localStorageStickerList.data,
             list: mergedList,
         },
     };
 };
 
 export const syncResponseWithStorage = (responseStickerList) => {
-    const localStickerList = JSON.parse(
-        localStorage.getItem(LOCAL_STORAGE_STICKERS)
-    );
+    const store = getDefaultStore();
+    const localStorageStickerList = store.get(localStorageStickerListAtom);
 
     /*
      * 狀況 1
@@ -35,13 +35,11 @@ export const syncResponseWithStorage = (responseStickerList) => {
      * localStorage 沒有自訂貼圖列表，先儲存一份副本就回傳
      *
      */
-    if (localStickerList == null) {
-        localStorage.setItem(
-            LOCAL_STORAGE_STICKERS,
-            JSON.stringify(responseStickerList)
-        );
+    if (_.size(localStorageStickerList.data.list) == 0) {
+        console.log("Bahamut Sticker Master: 初始化 localStorage 的資料");
 
-        console.log("s1");
+        store.set(localStorageStickerListAtom, responseStickerList);
+
         return responseStickerList;
     }
 
@@ -54,18 +52,19 @@ export const syncResponseWithStorage = (responseStickerList) => {
      *
      */
     if (
-        _.size(localStickerList.data.list) !==
+        _.size(localStorageStickerList.data.list) !==
         _.size(responseStickerList.data.list)
     ) {
-        const mergedList = mergeList();
+        console.log("Bahamut Sticker Master: 偵測到新貼圖");
 
-        localStorage.setItem(
-            LOCAL_STORAGE_STICKERS,
-            JSON.stringify(mergedList)
+        const mergedStickerList = mergeStickerList(
+            localStorageStickerList,
+            responseStickerList
         );
 
-        console.log("s2");
-        return mergedList;
+        store.set(localStorageStickerListAtom, mergedStickerList);
+
+        return mergedStickerList;
     }
 
     /*
@@ -74,6 +73,7 @@ export const syncResponseWithStorage = (responseStickerList) => {
      * 直接回傳自訂的貼圖列表
      *
      */
-    console.log("s3");
-    return localStickerList;
+    console.log("Bahamut Sticker Master: 回傳自訂貼圖列表");
+
+    return localStorageStickerList;
 };
